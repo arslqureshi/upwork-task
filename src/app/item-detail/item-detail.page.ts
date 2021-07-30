@@ -1,26 +1,24 @@
-import { Component } from '@angular/core';
-import {HttpService} from '../service/http.service';
-import { NavController, ToastController } from '@ionic/angular';
-import { ActionSheetController } from '@ionic/angular';
-
+import { Component, OnInit } from '@angular/core';
+import { ActionSheetController, NavController, ToastController } from '@ionic/angular';
+import { HttpService } from '../service/http.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-item-detail',
+  templateUrl: './item-detail.page.html',
+  styleUrls: ['./item-detail.page.scss'],
 })
-export class HomePage {
+export class ItemDetailPage {
 
   isLoading = true;
-  users: any;
+  user: any;
   constructor(
     private httpService: HttpService,
     private toastController: ToastController,
     public actionSheetController: ActionSheetController,
     public navController: NavController
   ) {
-    this.httpService.getUsers().subscribe((data: any) => {
-      this.users = data.results;
+    this.httpService.getOneUser().subscribe((data: any) => {
+      this.user = data.results[0];
       this.isLoading = false;
     });
   }
@@ -72,10 +70,6 @@ export class HomePage {
     await actionSheet.present();
 
     const { role } = await actionSheet.onDidDismiss();
-  }
-
-  openProfile() {
-    this.navController.navigateForward('profile');
   }
 
 }
